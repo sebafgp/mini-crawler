@@ -7,60 +7,54 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Scraper {
 
-    private int profundidad;
-    private String destino;
+    private final int profundidad;
+    private final String fuente;
 
-    private DirectedGraph<String, DefaultEdge> grafo
+    private final DirectedGraph<String, DefaultEdge> grafo
             = new DefaultDirectedGraph<>(DefaultEdge.class);
 
     public Scraper(String fuente, int profundidad){
         //Explora todos los links de la fuente sin buscar
+        this.fuente = fuente;
         this.profundidad = profundidad;
         grafo.addVertex(fuente);
     }
 
-    public Scraper(String fuente, String destino, int profundidad){
-        this.profundidad = profundidad;
-        this.destino = destino;
-        grafo.addVertex(fuente);
+    public void exploraLinks() {
+        exploradorRecursivo(fuente, 0);
     }
 
-    public Set<String> findLinks(String url) {
+    private void exploradorRecursivo(String urlBase, int iteracionLocal){
+        if (++iteracionLocal > profundidad) return;
         try {
-            Set<String> links = new HashSet<>();
-
-            Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
+            Document doc = Jsoup.connect(urlBase).userAgent("Mozilla").get();
             Elements elements = doc.select("a[href]");
             for (Element element : elements) {
                 String link = element.attr("href");
-                link = limpiaLink(url, link);
-
+                link = limpiaLink(urlBase, link);
                 if(link.contains("http")) {
-                    links.add(link);
                     grafo.addVertex(link);
-                    grafo.addEdge(url, link);
+                    grafo.addEdge(urlBase, link);
+                    exploradorRecursivo(link, iteracionLocal);
                 }
             }
 
-            return links;
-
         } catch (IOException ex) {
-            return new HashSet<>();
+            System.out.println(ex.getMessage());
         }
     }
 
-    private String limpiaLink(String base, String link) {
-        if(link.charAt(0) == '/') link = base + link;
+    private String limpiaLink(String urlBase, String link) {
+        if(link.charAt(0) == '/') link = urlBase + link;
         if(link.contains("https")){
-            link.replace("https", "http");
+            link = link.replace("https", "http");
         }
         if(link.contains("www.")){
-            link.replace("www.", "");
+            link = link.replace("www.", "");
         }
         return link;
 
