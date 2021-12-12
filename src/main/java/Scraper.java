@@ -27,6 +27,7 @@ public class Scraper {
     }
 
     private void exploradorRecursivo(String urlBase, int iteracionLocal){
+        System.out.println(urlBase);
         if (++iteracionLocal > profundidad) return;
         try {
             Document doc = Jsoup.connect(urlBase).userAgent("Mozilla")
@@ -58,6 +59,7 @@ public class Scraper {
             if (link.contains("www.")) {
                 link = link.replace("www.", "");
             }
+            link = link.replaceAll("\\s+","%20");
             return link;
         } else return "";
 
