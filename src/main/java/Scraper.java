@@ -27,7 +27,6 @@ public class Scraper {
     }
 
     private void exploradorRecursivo(String urlBase, int iteracionLocal){
-        System.out.println(urlBase);
         if (++iteracionLocal > profundidad) return;
         try {
             Document doc = Jsoup.connect(urlBase).userAgent("Mozilla")
@@ -60,12 +59,11 @@ public class Scraper {
                 link = link.replace("www.", "");
             }
             link = link.replaceAll("\\s+","%20");
+            if (!link.endsWith("/")){
+                link += "/";
+            }
             return link;
         } else return "";
 
-    }
-
-    public int getCantidadDeAristasSalientes(String pagina){
-        return grafo.outgoingEdgesOf(pagina).size();
     }
 }
