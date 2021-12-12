@@ -1,4 +1,4 @@
-import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,9 +12,9 @@ public class Scraper {
     private final int profundidad;
     private final String fuente;
 
-    private final DirectedGraph<String, DefaultEdge> grafo;
+    private final DefaultDirectedGraph<String, DefaultEdge> grafo;
 
-    public Scraper(DirectedGraph<String, DefaultEdge> grafo, String fuente, int profundidad){
+    public Scraper(DefaultDirectedGraph<String, DefaultEdge> grafo, String fuente, int profundidad){
         //Explora todos los links de la fuente sin buscar
         this.grafo = grafo;
         this.fuente = fuente;
@@ -36,7 +36,7 @@ public class Scraper {
             for (Element element : elements) {
                 String link = element.attr("href");
                 link = limpiaLink(urlBase, link);
-                if(link.contains("http")) {
+                if(link.startsWith("http")) {
                     grafo.addVertex(link);
                     grafo.addEdge(urlBase, link);
                     exploradorRecursivo(link, iteracionLocal);
@@ -46,9 +46,6 @@ public class Scraper {
         } catch (IOException ex) {
             // catches
             // errores en certificados SSL
-        } catch (IllegalArgumentException ex){
-            // catches
-            // javascript:PicLensLite.start({feedUrl:'http://ubiobio.cl/culturaubb/wp-content/plugins/nextgen-gallery/xml/media-rss.php?gid=208&mode=gallery'});
         }
 
     }

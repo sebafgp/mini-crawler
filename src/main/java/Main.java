@@ -1,4 +1,3 @@
-import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -6,7 +5,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        final DirectedGraph<String, DefaultEdge> grafo
+        final DefaultDirectedGraph<String, DefaultEdge> grafo
                 = new DefaultDirectedGraph<>(DefaultEdge.class);
 
         int profundidad = 2; // profundidad = [0, x], con 0 siendo la raiz
