@@ -1,5 +1,4 @@
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,18 +6,17 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class Scraper {
 
     private final int profundidad;
     private final String fuente;
 
-    private final DirectedGraph<String, DefaultEdge> grafo
-            = new DefaultDirectedGraph<>(DefaultEdge.class);
+    private final DirectedGraph<String, DefaultEdge> grafo;
 
-    public Scraper(String fuente, int profundidad){
+    public Scraper(DirectedGraph<String, DefaultEdge> grafo, String fuente, int profundidad){
         //Explora todos los links de la fuente sin buscar
+        this.grafo = grafo;
         this.fuente = fuente;
         this.profundidad = profundidad;
         grafo.addVertex(fuente);
@@ -29,9 +27,11 @@ public class Scraper {
     }
 
     private void exploradorRecursivo(String urlBase, int iteracionLocal){
+        System.out.println(urlBase);
         if (++iteracionLocal > profundidad) return;
         try {
-            Document doc = Jsoup.connect(urlBase).userAgent("Mozilla").get();
+            Document doc = Jsoup.connect(urlBase).userAgent("Mozilla")
+                    .get();
             Elements elements = doc.select("a[href]");
             for (Element element : elements) {
                 String link = element.attr("href");
@@ -44,19 +44,26 @@ public class Scraper {
             }
 
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            // catches
+            // errores en certificados SSL
+        } catch (IllegalArgumentException ex){
+            // catches
+            // javascript:PicLensLite.start({feedUrl:'http://ubiobio.cl/culturaubb/wp-content/plugins/nextgen-gallery/xml/media-rss.php?gid=208&mode=gallery'});
         }
+
     }
 
     private String limpiaLink(String urlBase, String link) {
-        if(link.charAt(0) == '/') link = urlBase + link;
-        if(link.contains("https")){
-            link = link.replace("https", "http");
-        }
-        if(link.contains("www.")){
-            link = link.replace("www.", "");
-        }
-        return link;
+        if(!link.isBlank()) {
+            if (link.charAt(0) == '/') link = urlBase + link;
+            if (link.contains("https")) {
+                link = link.replace("https", "http");
+            }
+            if (link.contains("www.")) {
+                link = link.replace("www.", "");
+            }
+            return link;
+        } else return "";
 
     }
 
