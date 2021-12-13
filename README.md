@@ -75,6 +75,10 @@ La pagina destino no se encuentra en el grafo.
 - El programa no reconocerá los links que puedan mostrarse luego de cargar un script
 - El programa considera links que estén contenidos en `<a href>`
 
+## Instrucciones de compilación y ejecución
+
+La clase a ejecutar para este proyecto es `Main.java`, y debe usar Java 16. Este proyecto fue compilado usando Maven y se deben adjuntar las dependencias indicadas en el apartado correspondiente.
+
 ## Dependencias
 
 Para este proyecto se utilizó [JgraphT](https://github.com/jgrapht/jgrapht) para manejar el grafo y la búsqueda en éste, y [Jsoup](https://github.com/jhy/jsoup/) para manejar las conexiones a las páginas y el scraping de sus documentos. Las siguientes dependencias se incluyen en el archivo `pom.xml`:
