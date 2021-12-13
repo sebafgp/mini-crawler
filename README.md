@@ -31,7 +31,7 @@ Al reconocer un link, intentará formatearlo para mantener una consistencia en l
 1. Conecta a la página con URL dado para obtener su archivo.
 2. Encuentra todos los elementos que sean links (`href`).
 3. Formatea el link.
-4. Si sigue siendo un link válido agregar el vértice al grafo y conectarlo con el link raíz.
+4. Si sigue siendo un link válido agregar el vértice al grafo y conectarlo con el link base.
 5. Itera la función sobre el link encontrado.
 
 ## Ejemplo
