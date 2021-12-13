@@ -72,6 +72,7 @@ La pagina destino no se encuentra en el grafo.
 ## Consideraciones
 
 - Se asume que los links `urlBase` y `destino` en `Main` están formateados correctamente
+- El programa no reconocerá los links que puedan mostrarse luego de cargar un script
 
 ## Dependencias
 
