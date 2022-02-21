@@ -1,4 +1,4 @@
-# Tarea_2_IA
+# Mini Web Crawler
 
 Este proyecto considera dos clases: `Main.java` y `Scraper.java`. La idea principal del proyecto es llenar un grafo con páginas web como nodos y una URL inicio indicada en la clase Main como raíz, y luego buscar una conexión a una página destino utilizando el algoritmo de búsqueda BFS (Breadth First Search o Búsqueda por Anchura)
 
